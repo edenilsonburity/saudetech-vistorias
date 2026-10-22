@@ -1,0 +1,419 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>SaúdeTech Vistorias Beta</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one phone-width app column (centred on desktop), sticky top bar, sticky action bar at the foot of each form screen.
+   This build deliberately contains usability problems for a classroom test. */
+:root{
+  --page:#E6EAF0; --bg:#F7F8FA; --surface:#FFFFFF; --ink:#14213D; --muted:#56607A; --faint:#A3ABBA; --line:#D6DCE5;
+  --accent:#B04A12; --on-accent:#FFFFFF; --accent-soft:#FBE6D6;
+  --ok:#1C6E47; --ok-fill:#2E9E5B; --bad:#A8241C; --bad-fill:#D4392E; --bad-soft:#FBE1DE; --warn:#8A5A00; --warn-soft:#FBEFD2;
+  --shadow:0 1px 2px rgba(20,33,61,.06),0 8px 24px rgba(20,33,61,.08);
+  --f-ui:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --page:#0A0F1C; --bg:#10172A; --surface:#182238; --ink:#E8ECF4; --muted:#A1AABF; --faint:#4E5A75; --line:#2B3754;
+  --accent:#F08A45; --on-accent:#14213D; --accent-soft:#3B2718;
+  --ok:#62C893; --ok-fill:#2E9E5B; --bad:#F38A80; --bad-fill:#D4392E; --bad-soft:#3D1C19; --warn:#E9B654; --warn-soft:#382A10;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --page:#0A0F1C; --bg:#10172A; --surface:#182238; --ink:#E8ECF4; --muted:#A1AABF; --faint:#4E5A75; --line:#2B3754;
+  --accent:#F08A45; --on-accent:#14213D; --accent-soft:#3B2718;
+  --ok:#62C893; --ok-fill:#2E9E5B; --bad:#F38A80; --bad-fill:#D4392E; --bad-soft:#3D1C19; --warn:#E9B654; --warn-soft:#382A10;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35); color-scheme:dark}
+
+html,body{height:100%}
+body{background:var(--page);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.45}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+*{box-sizing:border-box}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.app{max-width:440px;margin-inline:auto;min-height:100%;background:var(--bg);display:flex;flex-direction:column}
+@media (min-width:520px){.app{border-inline:1px solid var(--line);box-shadow:var(--shadow)}}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:8px;padding-block:10px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));min-height:64px}
+.bar-titles{flex:1;min-width:0}
+.bar-title{font-size:17px;font-weight:600;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-sub{font-size:13px;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icon-btn{width:44px;height:44px;border-radius:12px;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;flex:none}
+.icon-btn:hover{background:var(--bg)}
+.icon-btn svg{width:22px;height:22px}
+
+.screen{flex:1;display:flex;flex-direction:column;gap:20px;padding-block:20px 0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.screen>:last-child{margin-bottom:24px}
+
+h1{font-size:26px;line-height:1.2;font-weight:700;text-wrap:balance;margin:0}
+h2.sec{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin:4px 0 -8px}
+p{margin:0}
+.muted{color:var(--muted)}
+.faint{color:var(--faint)}
+.small{font-size:14px}
+.mono{font-family:var(--f-mono);font-size:.92em;font-variant-numeric:tabular-nums}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.hello{display:flex;flex-direction:column;gap:4px}
+.actions{display:grid;gap:10px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:12px;border:1.5px solid transparent;font-weight:600;cursor:pointer;text-align:center}
+.btn-lg{min-height:56px;font-size:17px}
+.btn-block{width:100%}
+.btn-primary{background:var(--accent);color:var(--on-accent)}
+.btn-primary:hover{filter:brightness(1.07)}
+.btn-secondary{background:var(--surface);color:var(--ink);border-color:var(--line)}
+.btn-danger{background:var(--bad);color:var(--surface)}
+.link{background:none;border:0;padding:0;color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
+.list{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.list li+li{border-top:1px solid var(--line)}
+.row{width:100%;display:flex;align-items:center;gap:12px;padding:14px 16px;background:none;border:0;text-align:left;cursor:pointer;min-height:64px}
+.row:hover{background:var(--bg)}
+.row-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.row-title{font-weight:600}
+.row-sub{font-size:13px;color:var(--faint)}
+.chev{color:var(--faint);font-size:22px;line-height:1}
+.empty{padding:16px;color:var(--faint);font-size:14px}
+.tagline{font-size:13px;font-variant-numeric:tabular-nums;color:var(--faint);white-space:nowrap}
+
+.form{display:flex;flex-direction:column;gap:18px;flex:1}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-weight:600;font-size:15px}
+.input{width:100%;min-height:48px;padding:10px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface)}
+.input:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+.banner{background:var(--bad-soft);color:var(--bad);border-radius:10px;padding:12px 14px;font-weight:600;font-size:15px}
+
+.actionbar{position:sticky;bottom:0;z-index:4;background:var(--bg);padding-block:12px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);margin-top:auto}
+.actionbar.two{display:grid;grid-template-columns:1.4fr 1fr;gap:10px}
+
+.items{display:flex;flex-direction:column;gap:10px}
+.item{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.item-row{display:flex;gap:12px;align-items:flex-start}
+.item-text{flex:1;min-width:0;font-size:15px;line-height:1.35}
+.code{font-family:var(--f-mono);font-size:12px;color:var(--faint);display:block}
+.ico{display:flex;gap:4px;flex:none}
+.ico button{width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--bg);font-size:15px;line-height:1;cursor:pointer;color:var(--faint);padding:0}
+.ico button.on[data-st="c"]{background:var(--ok-fill);border-color:var(--ok-fill);color:#fff}
+.ico button.on[data-st="nc"]{background:var(--bad-fill);border-color:var(--bad-fill);color:#fff}
+.ico button.on[data-st="na"]{background:var(--faint);border-color:var(--faint);color:var(--surface)}
+.nota-link{background:none;border:0;padding:0;font-size:12px;color:var(--faint);cursor:pointer;align-self:flex-start}
+textarea.input{min-height:56px;resize:none;font-size:14px}
+
+.res{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.res .val{font-family:var(--f-mono);font-size:28px;font-variant-numeric:tabular-nums}
+.abbr{font-family:var(--f-mono);font-size:14px;color:var(--muted)}
+.nc{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:14px}
+
+.foot-note{font-size:13px;color:var(--faint);text-align:center}
+
+.sheet-wrap{position:fixed;inset:0;z-index:20;background:rgba(10,15,28,.5);display:flex;align-items:flex-end;justify-content:center}
+.sheet{width:100%;max-width:440px;max-height:88%;overflow:auto;background:var(--surface);border-radius:20px 20px 0 0;display:flex;flex-direction:column;gap:16px;
+  padding-block:20px calc(20px + env(safe-area-inset-bottom,0px));padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.sheet h2{font-size:20px;margin:0}
+.sheet .btns{display:grid;gap:8px}
+.warnbox{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:12px 14px;font-size:14px;font-weight:500}
+.fac-tasks{margin:0;padding-left:20px;font-size:14px;display:flex;flex-direction:column;gap:4px}
+.log{list-style:none;margin:0;padding:0;border:1px solid var(--line);border-radius:12px;max-height:220px;overflow:auto;font-size:14px}
+.log li{display:flex;gap:10px;padding:8px 12px}
+.log li+li{border-top:1px solid var(--line)}
+.log time{font-family:var(--f-mono);color:var(--muted);flex:none;font-variant-numeric:tabular-nums}
+.clock{font-family:var(--f-mono);font-size:22px;font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app">
+  <header class="bar" id="bar"></header>
+  <main class="screen" id="screen"></main>
+</div>
+<div class="sheet-wrap" id="sheet" hidden><div class="sheet" id="sheetBody" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div></div>
+
+<script>
+// Dados fictícios, para fins didáticos.
+const TIPOS = {
+  farmaceutico: { nome: 'Farmacêutico', roteiro: 'FA-02', grupos: [
+    { nome: 'Responsabilidade técnica', itens: [ { id:'f1', cod:'2.1.1', t:'Responsável técnico presente durante o funcionamento', p:3, c:true } ] },
+    { nome: 'Armazenamento', itens: [
+      { id:'f2', cod:'3.2.1', t:'Medicamentos dentro do prazo de validade', p:3, c:true },
+      { id:'f3', cod:'3.2.4', t:'Substâncias da Portaria 344/98 em armário com chave', p:2 },
+      { id:'f4', cod:'3.3.1', t:'Registro diário de temperatura e umidade', p:1 } ] },
+    { nome: 'Documentação e PGRSS', itens: [
+      { id:'f5', cod:'5.1.1', t:'Licença sanitária vigente exposta', p:2 },
+      { id:'f6', cod:'5.4.2', t:'Gerenciamento de RSS conforme PGRSS', p:1 } ] } ] },
+  alimenticio: { nome: 'Alimentício', roteiro: 'AL-01', grupos: [
+    { nome: 'Edificação e instalações', itens: [
+      { id:'a1', cod:'4.1.1', t:'Pisos, paredes e tetos em condições higiênico-sanitárias adequadas', p:2 },
+      { id:'a2', cod:'4.1.3', t:'Coletores de resíduos com tampa e acionamento não manual', p:2 },
+      { id:'a3', cod:'4.1.5', t:'Lavatório exclusivo dotado de insumos para higienização', p:2 } ] },
+    { nome: 'Manipuladores', itens: [
+      { id:'a4', cod:'4.6.1', t:'Manipuladores com uniforme e paramentação adequados', p:2 },
+      { id:'a5', cod:'4.6.3', t:'Controle de saúde dos manipuladores (PCMSO)', p:1 } ] },
+    { nome: 'Matérias-primas e armazenamento', itens: [
+      { id:'a6', cod:'4.7.2', t:'Gêneros alimentícios dentro do prazo de validade', p:3, c:true },
+      { id:'a7', cod:'4.7.5', t:'Equipamentos de refrigeração a temperatura ≤ 5 °C', p:3, c:true },
+      { id:'a8', cod:'4.7.6', t:'Matérias-primas armazenadas sobre paletes ou estrados', p:1 } ] },
+    { nome: 'CIV e documentação', itens: [
+      { id:'a9', cod:'4.3.1', t:'Ausência de vetores e pragas urbanas', p:3, c:true },
+      { id:'a10', cod:'4.3.2', t:'Comprovante de controle integrado de vetores (CIV)', p:1 },
+      { id:'a11', cod:'4.11.1', t:'Licença sanitária vigente exposta', p:2 },
+      { id:'a12', cod:'4.11.2', t:'Manual de Boas Práticas e POPs disponíveis', p:1 } ] } ] },
+  salao: { nome: 'Salão de beleza', roteiro: 'SB-03', grupos: [
+    { nome: 'Biossegurança', itens: [
+      { id:'s1', cod:'6.1.1', t:'Perfurocortantes descartados em coletor rígido', p:3, c:true },
+      { id:'s2', cod:'6.1.2', t:'Artigos críticos esterilizados com registro de ciclo', p:3, c:true } ] },
+    { nome: 'Produtos e rouparia', itens: [
+      { id:'s3', cod:'6.2.1', t:'Produtos regularizados e dentro da validade', p:2 },
+      { id:'s4', cod:'6.2.3', t:'Rouparia de uso individual', p:1 } ] },
+    { nome: 'Documentação', itens: [ { id:'s5', cod:'6.5.1', t:'Licença sanitária vigente exposta', p:2 } ] } ] }
+};
+const FICHA_CNPJ = '12.345.678/0001-90';
+
+function seed(){
+  const dois = new Date(Date.now() - 2*864e5); dois.setHours(10,20,0,0);
+  const resp = {};
+  TIPOS.alimenticio.grupos.forEach(g => g.itens.forEach(i => resp[i.id] = { st:'c', obs:'' }));
+  resp.a10 = { st:'nc', obs:'CIV vencido (03/2026)' };
+  resp.a12 = { st:'nc', obs:'' };
+  return {
+    ests: [
+      { id:'e3', nome:'Lanchonete Ponto Certo', cnpj:'45678901000132', tipo:'alimenticio', end:'Rua Pernambuco, 88', resp:'Rafael Costa' },
+      { id:'e1', nome:'Restaurante Sabor da Terra', cnpj:'23456789000110', tipo:'alimenticio', end:'Av. Higienópolis, 1200', resp:'Marcos Lima' },
+      { id:'e4', nome:'Studio Beleza Pura', cnpj:'56789012000143', tipo:'salao', end:'Av. Madre Leônia, 310', resp:'Camila Torres' },
+      { id:'e2', nome:'Farmácia Vida Nova', cnpj:'34567890000121', tipo:'farmaceutico', end:'Rua Sergipe, 455', resp:'Juliana Prado' } ],
+    vists: [ { id:'v1', estId:'e1', inicio: dois, fim: new Date(dois.getTime()+38*6e4), status:'fin', resp } ]
+  };
+}
+
+let S, t0, LOG, NAV, sheetKind = null, clockTimer = null, confirmReset = false;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = p => p + Math.random().toString(36).slice(2, 8);
+const est = id => S.ests.find(e => e.id === id);
+const vist = id => S.vists.find(v => v.id === id);
+const itensDe = tipo => TIPOS[tipo].grupos.flatMap(g => g.itens);
+const fmtData = d => d.toLocaleDateString('pt-BR', { day:'2-digit', month:'2-digit', year:'2-digit' });
+const fmtHora = d => d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+function decorrido(){ const s = Math.max(0, Math.floor((Date.now()-t0)/1000)); return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0'); }
+function ev(texto){ LOG.push({ at: decorrido(), texto }); if (sheetKind === 'fac') renderLog(); }
+
+function iniciarSessao(){ S = seed(); t0 = Date.now(); LOG = []; NAV = [{ r:'home' }]; ev('Sessão iniciada (dados zerados)'); render(); }
+const atual = () => NAV[NAV.length-1];
+function go(r, p = {}){ NAV.push({ r, ...p }); render(); }
+function voltar(){ if (NAV.length > 1) NAV.pop(); render(); }
+function inicio(){ NAV = [{ r:'home' }]; render(); }
+
+function calc(v){
+  const e = est(v.estId), itens = itensDe(e.tipo);
+  let tot = 0, ok = 0; const c = { c:0, nc:0, na:0, p:0 }, ncs = [];
+  itens.forEach(i => {
+    const r = v.resp[i.id];
+    if (!r || !r.st) { c.p++; return; }
+    if (r.st === 'na') { c.na++; return; }
+    tot += i.p;
+    if (r.st === 'c') { ok += i.p; c.c++; } else { c.nc++; ncs.push({ i, obs: r.obs }); }
+  });
+  return { c, idx: tot ? ok / tot : null, ncs, total: itens.length };
+}
+const fmtIdx = x => x === null ? '—' : x.toFixed(4).replace('.', ',');
+
+const ICON_BACK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>';
+const ICON_MORE = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>';
+function header(titulo, sub, podeVoltar){
+  $('#bar').innerHTML =
+    (podeVoltar ? `<button class="icon-btn" data-act="voltar" aria-label="Voltar">${ICON_BACK}</button>` : '<span style="width:4px"></span>') +
+    `<div class="bar-titles"><p class="bar-title">${esc(titulo)}</p>${sub ? `<p class="bar-sub">${esc(sub)}</p>` : ''}</div>` +
+    `<button class="icon-btn" data-act="fac" aria-label="Painel do facilitador">${ICON_MORE}</button>`;
+}
+
+function render(){
+  const a = atual();
+  ({ home: telaHome, novoEst: telaNovoEst, escolher: telaEscolher, checklist: telaChecklist, relatorio: telaRelatorio })[a.r]($('#screen'), a);
+  window.scrollTo(0, 0);
+}
+
+function telaHome(sc){
+  header('SaúdeTech Vistorias', 'v0.9 beta', false);
+  const run = S.vists.filter(v => v.status === 'run'), fin = S.vists.filter(v => v.status === 'fin');
+  sc.innerHTML = `
+    <section class="hello"><p class="eyebrow">${fmtData(new Date())}</p><h1>Olá, Ana</h1><p class="faint small">Mat. 40217 · Perfil FISCAL_N2</p></section>
+    <div class="actions">
+      <button class="btn btn-primary btn-lg" data-act="nova">Executar roteiro</button>
+      <button class="btn btn-secondary btn-lg" data-act="novoEst">Novo registro</button>
+    </div>
+    ${run.length ? `<h2 class="sec">Roteiros em execução</h2><ul class="list">${run.map(v => `<li><button class="row" data-act="abrirVist" data-id="${v.id}"><span class="row-main"><span class="row-title">${esc(est(v.estId).nome)}</span><span class="row-sub">Status: RUN</span></span><span class="chev">›</span></button></li>`).join('')}</ul>` : ''}
+    <h2 class="sec">Histórico</h2>
+    <ul class="list">${fin.length ? fin.map(v => `<li><button class="row" data-act="verRel" data-id="${v.id}"><span class="row-main"><span class="row-title">${esc(est(v.estId).nome)}</span><span class="row-sub">${fmtData(v.fim)} ${fmtHora(v.fim)}</span></span><span class="tagline">${fmtIdx(calc(v).idx)}</span></button></li>`).join('') : '<li class="empty">Sem registros.</li>'}</ul>
+    <h2 class="sec">Cadastros (${S.ests.length})</h2>
+    <ul class="list">${S.ests.map(e => `<li><div class="row" style="cursor:default"><span class="row-main"><span class="row-title">${esc(e.nome)}</span><span class="row-sub mono">${esc(e.cnpj)}</span></span></div></li>`).join('')}</ul>
+    <p class="foot-note">Protótipo didático · dados fictícios, guardados só nesta aba</p>`;
+}
+
+function telaNovoEst(sc, a){
+  header('Novo registro', '', true);
+  sc.innerHTML = `
+    <form class="form" id="fEst" novalidate>
+      ${a.erro ? '<p class="banner" role="alert">Dados inválidos. Verifique o formulário.</p>' : ''}
+      <div class="field"><label for="f-nome">Razão social</label><input class="input" id="f-nome" autocomplete="off"></div>
+      <div class="field"><label for="f-cnpj">CNPJ</label><input class="input mono" id="f-cnpj" autocomplete="off"></div>
+      <div class="field"><label for="f-tipo">Atividade</label>
+        <select class="input" id="f-tipo">${Object.entries(TIPOS).map(([k,t]) => `<option value="${k}">${t.nome}</option>`).join('')}</select></div>
+      <div class="field"><label for="f-end">Endereço</label><input class="input" id="f-end" autocomplete="off"></div>
+      <div class="field"><label for="f-resp">Responsável legal</label><input class="input" id="f-resp" autocomplete="off"></div>
+      <div class="actionbar"><button type="submit" class="btn btn-primary btn-block btn-lg">Processar</button></div>
+    </form>`;
+}
+function salvarEst(){
+  const nome = $('#f-nome').value.trim(), cnpj = $('#f-cnpj').value.trim(), tipo = $('#f-tipo').value;
+  const motivos = [];
+  if (!nome) motivos.push('nome vazio');
+  if (!/^\d{14}$/.test(cnpj)) motivos.push(`CNPJ recusado ("${cnpj || 'vazio'}": aceita só 14 dígitos, sem pontuação)`);
+  else if (S.ests.some(e => e.cnpj === cnpj)) motivos.push('CNPJ duplicado');
+  if (motivos.length) {
+    ev('Erro no cadastro: ' + motivos.join('; ') + ' → formulário apagado');
+    atual().erro = true; render(); return;
+  }
+  S.ests.push({ id: uid('e'), nome, cnpj, tipo, end: $('#f-end').value.trim(), resp: $('#f-resp').value.trim() });
+  ev(`Cadastro salvo: ${nome} · atividade ${TIPOS[tipo].nome}${tipo === 'farmaceutico' ? ' (valor padrão do campo)' : ''}`);
+  inicio();
+}
+
+function telaEscolher(sc){
+  header('Executar roteiro', 'Selecione o registro', true);
+  sc.innerHTML = `<ul class="list">${S.ests.map(e => `<li><button class="row" data-act="iniciar" data-id="${e.id}">
+      <span class="row-main"><span class="row-title">${esc(e.nome)}</span><span class="row-sub mono">${esc(e.cnpj)}</span></span><span class="chev" aria-hidden="true">›</span></button></li>`).join('')}</ul>`;
+}
+function iniciar(estId){
+  let v = S.vists.find(x => x.estId === estId && x.status === 'run');
+  if (!v) { v = { id: uid('v'), estId, inicio: new Date(), status:'run', resp:{} }; S.vists.push(v); }
+  const e = est(estId);
+  ev(`Roteiro iniciado: ${e.nome} · checklist ${TIPOS[e.tipo].nome}`);
+  NAV = [{ r:'home' }, { r:'checklist', id: v.id }]; render();
+}
+
+function cardItem(v, i){
+  const r = v.resp[i.id] || {}, st = r.st;
+  const b = (k, s) => `<button type="button" class="${st === k ? 'on' : ''}" data-act="st" data-item="${i.id}" data-st="${k}">${s}</button>`;
+  return `<article class="item" id="it-${i.id}">
+    <div class="item-row"><p class="item-text"><span class="code">${i.cod}</span>${esc(i.t)}</p>
+      <div class="ico">${b('c','✓')}${b('nc','✗')}${b('na','∅')}</div></div>
+    ${r.nota ? `<textarea class="input" id="obs-${i.id}" data-obs="${i.id}" maxlength="40" aria-label="Nota">${esc(r.obs)}</textarea>`
+             : `<button type="button" class="nota-link" data-act="nota" data-item="${i.id}">+ nota</button>`}
+  </article>`;
+}
+function telaChecklist(sc, a){
+  const v = vist(a.id), e = est(v.estId), t = TIPOS[e.tipo];
+  header(e.nome, `Roteiro ${t.roteiro}`, true);
+  sc.innerHTML = `
+    ${t.grupos.map(g => `<h2 class="sec">${esc(g.nome)}</h2><div class="items">${g.itens.map(i => cardItem(v, i)).join('')}</div>`).join('')}
+    <div class="actionbar two">
+      <button class="btn btn-primary btn-lg" data-act="descartar" data-id="${v.id}">Descartar</button>
+      <button class="btn btn-secondary btn-lg" data-act="enviar" data-id="${v.id}">Enviar</button>
+    </div>`;
+}
+const NOMES_ST = { c:'Conforme (✓)', nc:'Não conforme (✗)', na:'Não se aplica (∅)' };
+function marcar(itemId, st){
+  const v = vist(atual().id), i = itensDe(est(v.estId).tipo).find(x => x.id === itemId);
+  const ant = v.resp[itemId]?.st; if (ant === st) return;
+  v.resp[itemId] = { ...(v.resp[itemId] || { obs:'' }), st };
+  ev(`${ant ? 'Alterado' : 'Marcado'}: ${i.cod} → ${NOMES_ST[st]}`);
+  $('#it-' + itemId).outerHTML = cardItem(v, i);
+}
+function abrirNota(itemId){
+  const v = vist(atual().id), i = itensDe(est(v.estId).tipo).find(x => x.id === itemId);
+  v.resp[itemId] = { ...(v.resp[itemId] || { obs:'' }), nota: true };
+  ev(`Abriu “+ nota” em ${i.cod}`);
+  $('#it-' + itemId).outerHTML = cardItem(v, i);
+  $('#obs-' + itemId).focus();
+}
+function descartar(id){
+  const v = vist(id); S.vists = S.vists.filter(x => x.id !== id);
+  ev(`Tocou em “Descartar”: vistoria de ${est(v.estId).nome} apagada sem confirmação`);
+  inicio();
+}
+function enviar(id){
+  const v = vist(id); v.status = 'fin'; v.fim = new Date();
+  const k = calc(v);
+  ev(`Tocou em “Enviar”: vistoria finalizada sem confirmação (${k.c.p} itens sem resposta)`);
+  NAV = [{ r:'home' }, { r:'relatorio', id }]; render();
+}
+
+function telaRelatorio(sc, a){
+  const v = vist(a.id), e = est(v.estId), k = calc(v);
+  header('Resultado', `Roteiro ${TIPOS[e.tipo].roteiro}`, true);
+  sc.innerHTML = `
+    <section class="res"><p class="faint small">IC (índice de conformidade)</p><p class="val">${fmtIdx(k.idx)}</p>
+      <p class="abbr">C: ${k.c.c} | NC: ${k.c.nc} | NA: ${k.c.na} | NV: ${k.c.p}</p>
+      <p class="faint small">${esc(e.nome)} · ${fmtData(v.fim)} ${fmtHora(v.fim)}</p></section>
+    <h2 class="sec">NC</h2>
+    <div class="items">${k.ncs.length ? k.ncs.map(n => `<p class="nc"><span class="mono">${n.i.cod}</span>${n.obs.trim() ? ' · ' + esc(n.obs) : ''}</p>`).join('') : '<p class="faint small">—</p>'}</div>
+    <div class="actionbar"><button class="btn btn-secondary btn-block btn-lg" data-act="inicio">OK</button></div>`;
+}
+
+// Painel do facilitador
+function abrirFac(){ sheetKind = 'fac'; confirmReset = false; renderFac(); $('#sheet').hidden = false;
+  clockTimer = setInterval(() => { const c = $('#clock'); if (c) c.textContent = decorrido(); }, 1000); }
+function renderFac(){
+  $('#sheetBody').innerHTML = `
+    <h2 id="sheetTitle">Painel do facilitador</h2>
+    <p class="muted small">Uso do facilitador e do observador. Os dados ficam só nesta aba: recarregar a página também zera tudo.</p>
+    <div><p class="muted small">Tempo desde o início da sessão</p><p class="clock" id="clock">${decorrido()}</p></div>
+    <div><p class="small" style="font-weight:600">Tarefas do teste</p>
+      <ol class="fac-tasks">
+        <li>Cadastrar “Padaria Pão Nosso”, alimentício, CNPJ <span class="mono">${FICHA_CNPJ}</span></li>
+        <li>Iniciar uma vistoria para a Padaria Pão Nosso</li>
+        <li>Registrar a lixeira da cozinha sem tampa, com observação</li>
+        <li>Finalizar a vistoria e consultar o relatório</li>
+      </ol></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <p class="small" style="font-weight:600">Registro da sessão <span class="muted" style="font-weight:400">(${LOG.length} eventos)</span></p>
+      <ul class="log" id="log"></ul>
+      <button class="btn btn-secondary" data-act="copiarLog">Copiar registro</button>
+    </div>
+    ${confirmReset
+      ? `<div class="warnbox">Isso apaga os cadastros e as vistorias feitos nesta sessão e volta aos dados iniciais.</div>
+         <div class="btns"><button class="btn btn-danger" data-act="reset">Apagar e reiniciar</button><button class="btn btn-secondary" data-act="cancelReset">Cancelar</button></div>`
+      : `<div class="btns"><button class="btn btn-primary" data-act="pedirReset">Reiniciar para novo participante</button><button class="btn btn-secondary" data-act="fechar">Fechar painel</button></div>`}`;
+  renderLog();
+}
+function renderLog(){ const l = $('#log'); if (!l) return; l.innerHTML = LOG.map(x => `<li><time>${x.at}</time><span>${esc(x.texto)}</span></li>`).join(''); l.scrollTop = l.scrollHeight; }
+function copiarLog(btn){
+  const txt = LOG.map(x => `${x.at}  ${x.texto}`).join('\n');
+  const ok = () => { btn.textContent = 'Registro copiado'; setTimeout(() => btn.textContent = 'Copiar registro', 2000); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents($('#log')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Texto selecionado: use Ctrl+C'; };
+  try { navigator.clipboard.writeText(txt).then(ok, fallback); } catch (e) { fallback(); }
+}
+function fecharSheet(){ $('#sheet').hidden = true; sheetKind = null; clearInterval(clockTimer); }
+
+document.addEventListener('click', e => {
+  if (e.target.id === 'sheet') { fecharSheet(); return; }
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const id = b.dataset.id;
+  switch (b.dataset.act) {
+    case 'voltar': voltar(); break;
+    case 'inicio': inicio(); break;
+    case 'nova': ev('Abriu “Executar roteiro”'); go('escolher'); break;
+    case 'novoEst': ev('Abriu “Novo registro”'); go('novoEst'); break;
+    case 'iniciar': iniciar(id); break;
+    case 'abrirVist': go('checklist', { id }); break;
+    case 'verRel': go('relatorio', { id }); break;
+    case 'st': marcar(b.dataset.item, b.dataset.st); break;
+    case 'nota': abrirNota(b.dataset.item); break;
+    case 'descartar': descartar(id); break;
+    case 'enviar': enviar(id); break;
+    case 'fac': abrirFac(); break;
+    case 'fechar': fecharSheet(); break;
+    case 'copiarLog': copiarLog(b); break;
+    case 'pedirReset': confirmReset = true; renderFac(); break;
+    case 'cancelReset': confirmReset = false; renderFac(); break;
+    case 'reset': fecharSheet(); iniciarSessao(); break;
+  }
+});
+document.addEventListener('submit', e => { if (e.target.id === 'fEst') { e.preventDefault(); salvarEst(); } });
+document.addEventListener('input', e => { const t = e.target; if (t.dataset.obs) { const v = vist(atual().id); v.resp[t.dataset.obs].obs = t.value; } });
+document.addEventListener('change', e => { const t = e.target; if (t.dataset.obs && t.value.trim()) ev(`Nota registrada (${t.value.length}/40 caracteres)`); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#sheet').hidden) fecharSheet(); });
+
+iniciarSessao();
+</script>
+
+</body></html>
